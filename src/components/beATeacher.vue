@@ -25,7 +25,7 @@
       <textarea cols="30" rows="10" v-model="class_info.class_content"></textarea>
       <label>Prerequisite: </label>
       <textarea cols="30" rows="10" v-model="class_info.prerequisite"></textarea>
-      <button type="button" v-on:click="createClass">Create Class</button>
+      <button v-on:click="createClass" type="button">Create Class</button>
     </form>
   </div>
 </template>
@@ -77,7 +77,6 @@
             vm.image = e.target.result;
           };
           reader.readAsDataURL(file);
-          console.log(file);
         },
         createClass(){
           let x = this.$firebase_basic.database().ref("classes").push(this.class_info);

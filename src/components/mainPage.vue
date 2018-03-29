@@ -73,7 +73,7 @@
             birthday: "",
             faculty: "",
             course: "",
-            rating: {num: 0, start: 0}
+            rating: {num: 0, star: 0}
           }
         }
       },
