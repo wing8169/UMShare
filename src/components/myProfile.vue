@@ -10,12 +10,12 @@
       <label>Faculty:</label>
       <input type="text" v-model="user_info.faculty">
       <label>Course:</label>
-      <input type="text" v-model="user_info.course">
+      <input type="text" v-model="user_info.course" required>
       <label>Contact Number:</label>
       <input type="text" v-model="user_info.contact">
       <label>Biography:</label>
       <textarea cols="30" rows="10" v-model="user_info.biography"></textarea>
-      <button v-on:click="updateInfo">Begin</button>
+      <button v-on:click="updateInfo" type="button">Begin</button>
     </form>
   </div>
 </template>
@@ -39,13 +39,7 @@
       },
       created() {
         this.$firebase_basic.database().ref('users/' + this.uid).on('value', (data)=> {
-          this.user_info.username = data.val().username;
-          this.user_info.profile_pic = data.val().profile_pic;
-          this.user_info.birthday = data.val().birthday;
-          this.user_info.faculty = data.val().faculty;
-          this.user_info.course = data.val().course;
-          this.user_info.contact = data.val().contact;
-          this.user_info.biography = data.val().biography;
+          this.user_info = data.val();
         });
       },
       methods:{
@@ -53,6 +47,7 @@
           let updates = {};
           updates['users/' + this.uid] = this.user_info;
           this.$firebase_basic.database().ref().update(updates);
+          alert("update complete!");
         }
       }
     }

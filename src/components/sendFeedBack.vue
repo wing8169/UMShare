@@ -1,5 +1,14 @@
 <template>
-
+  <div id="send-feedback">
+    <h1>Send Feedback</h1>
+    <form>
+      <label>Title: </label>
+      <input type="text" v-model="title">
+      <label>Description: </label>
+      <input type="text" v-model="desc">
+      <button type="button" v-on:click.once="sendFeedback">Submit</button>
+    </form>
+  </div>
 </template>
 
 <script>
@@ -8,7 +17,23 @@
       props: ["uid"],
       data(){
         return{
-
+          title: "",
+          desc: "",
+          temp: []
+        }
+      },
+      methods:{
+        sendFeedback(){
+          this.$firebase_basic.database().ref("feedbacks/").once('value').then((data)=>{
+            this.temp = data.val();
+            if(!this.temp) this.temp = [];
+            this.temp.push({id: this.uid, title: this.title, desc: this.desc});
+          }).then(()=>{
+            this.$firebase_basic.database().ref("feedbacks/").set(this.temp);
+          }).then(()=>{
+            this.title = "";
+            this.desc = "";
+          });
         }
       }
     }
