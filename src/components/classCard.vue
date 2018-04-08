@@ -14,18 +14,22 @@
       <h5>{{ rating }}</h5>
       <p></p>
     </div>
-    <form>
-      <button v-on:click="">Details</button>
-    </form>
+    <button v-on:click="showModal = true" type="button">Details</button>
+    <class-detail v-if="showModal" v-on:close="showModal = false" v-bind:class_info="class_info" v-bind:uid="uid"></class-detail>
   </div>
 </template>
 
 <script>
+  import classDetails from "./ClassDetails.vue";
   export default {
+    components:{
+      "class-detail": classDetails
+    },
     props:["class_info", "uid"],
     name: "class-card",
     data(){
       return{
+        showModal: false,
         name: "",
         num: 0,
         rating: 0,
@@ -38,8 +42,8 @@
 
     },
     mounted(){
-      // grab the user_info, update name, num and rating
-      this.$firebase_basic.database().ref("users/" + this.uid).on('value', (data)=>{
+      // grab the teacher info, update name, num and rating
+      this.$firebase_basic.database().ref("users/" + this.class_info.conductor).on('value', (data)=>{
         this.name = data.val().username;
         this.num = data.val().rating.num;
         this.rating = data.val().rating.star;

@@ -5,21 +5,21 @@
       <input type="file" v-on:change="onFileChange">
       <img v-bind:src="image" alt="">
       <label>Class Name: </label>
-      <input type="text" v-model="class_info.name">
+      <input type="text" v-model="class_info.name" maxlength="20">
       <label>Category: </label>
-      <input type="text" v-model="class_info.category">
+      <input type="text" v-model="class_info.category" maxlength="20">
       <label>Description: </label>
-      <textarea cols="30" rows="10" v-model="class_info.desc"></textarea>
-      <label>Pricing: </label>
-      <input type="text" v-model="class_info.pricing">
+      <textarea cols="30" rows="10" v-model="class_info.desc" maxlength="50"></textarea>
+      <label>Pricing(per class) RM: </label>
+      <input type="number" v-model="class_info.pricing" maxlength="5">
       <label>Available Slots: </label>
-      <input type="number" v-model="class_info.slots">
+      <input type="number" v-model="class_info.slots" maxlength="5">
       <label>Venue: </label>
-      <input type="text" v-model="class_info.venue">
+      <input type="text" v-model="class_info.venue" maxlength="20">
       <label>Time: </label>
-      <input type="text" v-model="class_info.time">
+      <input type="text" v-model="class_info.time" maxlength="20">
       <label>Date: </label>
-      <input type="text" v-model="class_info.date">
+      <input type="text" v-model="class_info.date" maxlength="20">
       <input type="checkbox" v-model="class_info.negotiable">Time is Negotiable
       <label>Class Content: </label>
       <textarea cols="30" rows="10" v-model="class_info.class_content"></textarea>

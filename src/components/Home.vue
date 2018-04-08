@@ -42,7 +42,8 @@
     props: ["uid"],
     data(){
       return{
-        crt_component: "my-groups"
+        crt_component: "my-groups",
+        temp: []
       }
     },
     mounted(){
@@ -56,10 +57,19 @@
     },
     methods:{
       facebookLogout: function(){
-        this.$firebase_basic.auth().signOut().then(()=>{
-          // log out and push to main page
-          this.$router.push({path: "/"});
-        })
+        this.$firebase_basic.database().ref("activeUsers").once('value').then((data)=>{
+          this.temp = data.val();
+          if(!this.temp) this.temp = [];
+          let index = this.temp.indexOf(this.uid);
+          if(index != -1) this.temp.splice(index, 1);
+        }).then(()=>{
+          this.$firebase_basic.database().ref("activeUsers").set(this.temp);
+        }).then(()=>{
+          this.$firebase_basic.auth().signOut().then(()=>{
+            // log out and push to main page
+            this.$router.push({path: "/"});
+          });
+        });
       }
     }
   }

@@ -8,13 +8,13 @@
       <label>Birthday:</label>
       <input type="date" v-model="user_info.birthday">
       <label>Faculty:</label>
-      <input type="text" v-model="user_info.faculty">
+      <input type="text" v-model="user_info.faculty" maxlength="50">
       <label>Course:</label>
-      <input type="text" v-model="user_info.course" required>
+      <input type="text" v-model="user_info.course" maxlength="50">
       <label>Contact Number:</label>
-      <input type="text" v-model="user_info.contact">
+      <input type="text" v-model="user_info.contact" maxlength="15">
       <label>Biography:</label>
-      <textarea cols="30" rows="10" v-model="user_info.biography"></textarea>
+      <textarea cols="30" rows="10" v-model="user_info.biography" maxlength="50"></textarea>
       <button v-on:click="updateInfo" type="button">Begin</button>
     </form>
   </div>

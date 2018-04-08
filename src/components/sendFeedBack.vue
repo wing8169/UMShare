@@ -3,9 +3,9 @@
     <h1>Send Feedback</h1>
     <form>
       <label>Title: </label>
-      <input type="text" v-model="title">
+      <input type="text" v-model="title" maxlength="50">
       <label>Description: </label>
-      <input type="text" v-model="desc">
+      <input type="text" v-model="desc" maxlength="100">
       <button type="button" v-on:click.once="sendFeedback">Submit</button>
     </form>
   </div>

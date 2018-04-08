@@ -8,9 +8,9 @@
       <input type="file" v-on:change="onFileChange">
       <img v-bind:src="image" alt="">
       <label>Group Name:</label>
-      <input type="text" v-model="group_info.name">
+      <input type="text" v-model="group_info.name" maxlength="20">
       <label>Description:</label>
-      <input type="text" v-model="group_info.desc">
+      <input type="text" v-model="group_info.desc" maxlength="50">
       <button v-on:click="createGroup">Create a Group</button>
     </form>
   </div>

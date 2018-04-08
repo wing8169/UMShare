@@ -105,6 +105,14 @@
                 }
               })
             }).then(()=>{
+              this.$firebase_basic.database().ref("activeUsers").once('value').then((data)=>{
+                this.temp = data.val();
+                if(!this.temp) this.temp = [];
+                this.temp.push(this.user.uid);
+              }).then(()=>{
+                this.$firebase_basic.database().ref("activeUsers").set(this.temp);
+              })
+            }).then(()=>{
               // navigate to the home page, push user id to home page
               this.$router.push({name: "home", params: {uid: this.user.uid}});
             }).catch(function(error) {
