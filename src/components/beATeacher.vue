@@ -25,7 +25,7 @@
       <textarea cols="30" rows="10" v-model="class_info.class_content"></textarea>
       <label>Prerequisite: </label>
       <textarea cols="30" rows="10" v-model="class_info.prerequisite"></textarea>
-      <button v-on:click="createClass" type="button">Create Class</button>
+      <button v-on:click="createClass">Create Class</button>
     </form>
   </div>
 </template>
@@ -63,14 +63,18 @@
         }
       },
       methods:{
+        // when a file is selected
         onFileChange(e) {
           let files = e.target.files || e.dataTransfer.files;
           if (!files.length)
             return;
+          // if the file is not empty, set this.file to the first file.
           this.file = files[0];
+          // create an image to that file.
           this.createImage(files[0]);
         },
         createImage(file) {
+          // create the image based on file
           let reader = new FileReader();
           let vm = this;
           reader.onload = (e) => {
@@ -79,18 +83,32 @@
           reader.readAsDataURL(file);
         },
         createClass(){
-          let x = this.$firebase_basic.database().ref("classes").push(this.class_info);
-          this.class_info.image = "class_images/" + x.key + "." + this.file.name.substring(this.file.name.lastIndexOf(".")+1);
-          this.$firebase_basic.database().ref("classes/" + x.key + "/image").set(this.class_info.image);
-          this.$firebase_basic.database().ref("classes/" + x.key + "/key").set(x.key);
-          let ref = this.$firebase_basic.storage().ref().child("class_images/" + x.key + "." + this.file.name.substring(this.file.name.lastIndexOf(".")+1));
-          ref.put(this.file);
-          this.$firebase_basic.database().ref("users/" + this.uid + "/class_teach").once('value').then((data)=>{
-            this.temp = data.val();
-            this.temp.push(x.key);
-          }).then(()=>{
-            this.$firebase_basic.database().ref("users/" + this.uid + "/class_teach").set(this.temp);
-          });
+          let verified = true;
+          // verify the file first
+          if(!this.file.name){
+            alert("upload image first");
+            verified = false;
+          }
+          if(verified){
+            // push the class_info to the database and store key at x
+            let x = this.$firebase_basic.database().ref("classes").push(this.class_info);
+            // update this.class_info.image
+            this.class_info.image = "class_images/" + x.key + "." + this.file.name.substring(this.file.name.lastIndexOf(".")+1);
+            // update database with image
+            this.$firebase_basic.database().ref("classes/" + x.key + "/image").set(this.class_info.image);
+            // update database with key
+            this.$firebase_basic.database().ref("classes/" + x.key + "/key").set(x.key);
+            // refer to the location in storage
+            let ref = this.$firebase_basic.storage().ref().child("class_images/" + x.key + "." + this.file.name.substring(this.file.name.lastIndexOf(".")+1));
+            // push the image to the storage, and update class_teach
+            ref.put(this.file);
+            this.$firebase_basic.database().ref("users/" + this.uid + "/class_teach").once('value').then((data)=>{
+              this.temp = data.val();
+              this.temp.push(x.key);
+            }).then(()=>{
+              this.$firebase_basic.database().ref("users/" + this.uid + "/class_teach").set(this.temp);
+            });
+          }
         }
       }
     }

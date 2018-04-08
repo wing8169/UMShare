@@ -39,22 +39,25 @@
       'send-feedback': sendFeedBack,
       'custom-footer': CustomFooter
     },
-    mounted(){
-      this.$firebase.auth().onAuthStateChanged((user)=>{
-        if(!user){
-          this.$router.push({path: "/"});
-        }
-      });
-    },
     props: ["uid"],
     data(){
       return{
         crt_component: "my-groups"
       }
     },
+    mounted(){
+      // When the page is loaded, add an event listener for authentication state change.
+      this.$firebase.auth().onAuthStateChanged((user)=>{
+        if(!user){
+          // if the user does not exist, push back to the main page
+          this.$router.push({path: "/"});
+        }
+      });
+    },
     methods:{
       facebookLogout: function(){
         this.$firebase_basic.auth().signOut().then(()=>{
+          // log out and push to main page
           this.$router.push({path: "/"});
         })
       }

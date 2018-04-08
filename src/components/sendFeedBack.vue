@@ -24,11 +24,14 @@
       },
       methods:{
         sendFeedback(){
+          // grab the existing feedback from the database
           this.$firebase_basic.database().ref("feedbacks/").once('value').then((data)=>{
             this.temp = data.val();
             if(!this.temp) this.temp = [];
+            // push the current feedback to the array
             this.temp.push({id: this.uid, title: this.title, desc: this.desc});
           }).then(()=>{
+            // update the database
             this.$firebase_basic.database().ref("feedbacks/").set(this.temp);
           }).then(()=>{
             this.title = "";

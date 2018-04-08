@@ -2,7 +2,7 @@
   <div id="be-a-student">
     <h1>Join Classes</h1>
     <input type="text" placeholder="Search">
-    <class-card v-for="c in classes" v-if="!user_info.class_learn.includes(c.key) && !user_info.class_teach.includes(c.key)"  v-bind:class_info="c" v-bind:uid="uid"></class-card>
+    <class-card v-for="c in classes" v-bind:class_info="c" v-bind:uid="uid"></class-card>
   </div>
 </template>
 
@@ -16,25 +16,30 @@
     },
     data(){
       return{
-        classes: {},
+        classes: [],
         user_info:{
-          class_learn: [],
-          class_teach: [],
-          name: ""
+
         }
       }
     },
     mounted(){
-      this.$firebase_basic.database().ref('classes').on('value', (data)=> {
-        this.classes = data.val();
-      });
-      if(!this.classes) {
-        this.classes = {};
-      }
+      // if nothing then {}
+      if(!this.classes) this.classes = {};
+      // get the user_info
       this.$firebase_basic.database().ref('users/' + this.uid).once('value').then((data)=> {
-        this.user_info.class_learn = data.val().class_learn;
-        this.user_info.class_teach = data.val().class_teach;
-        this.user_info.name = data.val().username;
+        this.user_info = data.val();
+      });
+      // grab the classes data and put in this.classes
+      this.$firebase_basic.database().ref('classes').on('value', (data)=> {
+        let tmp = data.val();
+        // if nothing then {}
+        if(!tmp) tmp = {};
+        for (let k in tmp) {
+          // push to the list-to-display if the key not exists in user_info.class
+          if (!this.user_info.class_learn.includes(tmp[k].key) && !this.user_info.class_teach.includes(tmp[k].key)) {
+            this.classes.push(tmp[k]);
+          }
+        }
       });
     },
     methods:{

@@ -26,19 +26,29 @@
       props: ["uid"],
       data() {
         return {
+          // initialize user_info with nothing inside
           user_info:{
             username: "",
             profile_pic: "",
+            group: [0],
+            class_learn: [0],
+            class_teach: [0],
+            quited_group: [0],
+            deleted_class_learn: [0],
+            deleted_class_teach: [0],
+            chat_history: [0],
+            biography: "",
+            contact: "",
             birthday: "",
             faculty: "",
             course: "",
-            contact: "",
-            biography: ""
+            rating: {num: 0, star: 0}
           }
         }
       },
-      created() {
+      mounted() {
         this.$firebase_basic.database().ref('users/' + this.uid).on('value', (data)=> {
+          // refer to the database and grab the data to user_info
           this.user_info = data.val();
         });
       },
@@ -46,7 +56,9 @@
         updateInfo: function(){
           let updates = {};
           updates['users/' + this.uid] = this.user_info;
+          // map the path to the user_info
           this.$firebase_basic.database().ref().update(updates);
+          // update the data and alert the user
           alert("update complete!");
         }
       }

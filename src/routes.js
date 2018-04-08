@@ -20,3 +20,5 @@ export default[
   {path: "/home/:uid", name: "home", component: Home, props: true},
   {path: "/groupchatroom/:gid", name: "groupChatroom", component: groupChatroom, props: true}
 ]
+
+// group chat room no yet implemented

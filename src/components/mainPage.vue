@@ -3,7 +3,7 @@
     <header id="first_page">
       <h1>UM SHARE</h1>
       <p>To share, to learn, to earn</p>
-      <button v-on:click="facebookLogin">Begin</button>
+      <el-button v-on:click="facebookLogin">Begin</el-button>
     </header>
     <nav>
       <a href="#first_page">UM Share</a>
@@ -80,7 +80,8 @@
       methods:{
         facebookLogin: function(){
           if(this.user){
-            console.log(this.user);
+            // if exist, navigate to home page, push user id to home page
+            this.$router.push({name: "home", params: {uid: this.user.uid}});
           }
           else{
             let provider = new this.$firebase_basic.auth.FacebookAuthProvider();
@@ -90,9 +91,11 @@
               let token = result.credential.accessToken;
               // The signed-in user info.
               let user = result.user;
+              // token and user
               this.token = token;
               this.user = user;
             }).then(()=>{
+              // go to the database and grab user details for this user id
               this.$firebase_basic.database().ref('users/' + this.user.uid).once('value').then((data)=>{
                 // if data is null, create new user account for user
                 if(!data.val()){
@@ -102,8 +105,10 @@
                 }
               })
             }).then(()=>{
+              // navigate to the home page, push user id to home page
               this.$router.push({name: "home", params: {uid: this.user.uid}});
             }).catch(function(error) {
+              // rofl just log the error
               console.log(error);
             });
           }
