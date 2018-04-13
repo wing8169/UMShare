@@ -1,32 +1,48 @@
 <template>
   <div id="be-a-teacher">
     <h1>Create Class</h1>
-    <form>
-      <input type="file" v-on:change="onFileChange">
+    <el-form label-position="top">
+      <el-form-item label="Class image:">
+        <input type="file" v-on:change="onFileChange"></input>
+      </el-form-item>
       <img v-bind:src="image" alt="">
-      <label>Class Name: </label>
-      <input type="text" v-model="class_info.name" maxlength="20">
-      <label>Category: </label>
-      <input type="text" v-model="class_info.category" maxlength="20">
-      <label>Description: </label>
-      <textarea cols="30" rows="10" v-model="class_info.desc" maxlength="50"></textarea>
-      <label>Pricing(per class) RM: </label>
-      <input type="number" v-model="class_info.pricing" maxlength="5">
-      <label>Available Slots: </label>
-      <input type="number" v-model="class_info.slots" maxlength="5">
-      <label>Venue: </label>
-      <input type="text" v-model="class_info.venue" maxlength="20">
-      <label>Time: </label>
-      <input type="text" v-model="class_info.time" maxlength="20">
-      <label>Date: </label>
-      <input type="text" v-model="class_info.date" maxlength="20">
-      <input type="checkbox" v-model="class_info.negotiable">Time is Negotiable
-      <label>Class Content: </label>
-      <textarea cols="30" rows="10" v-model="class_info.class_content"></textarea>
-      <label>Prerequisite: </label>
-      <textarea cols="30" rows="10" v-model="class_info.prerequisite"></textarea>
-      <button v-on:click="createClass">Create Class</button>
-    </form>
+      <el-form-item label="Class Name:">
+        <el-input type="text" v-model="class_info.name" maxlength="20"></el-input>
+      </el-form-item>
+      <el-form-item label="Category:">
+        <el-input type="text" v-model="class_info.category" maxlength="20"></el-input>
+      </el-form-item>
+      <el-form-item label="Description:">
+        <el-input type="text" v-model="class_info.desc" maxlength="50"></el-input>
+      </el-form-item>
+      <el-form-item label="Pricing per Class: RM">
+        <el-input type="number" v-model="class_info.pricing" maxlength="5"></el-input>
+      </el-form-item>
+      <el-form-item label="Available Slots:">
+        <el-input type="number" v-model="class_info.slots" maxlength="5"></el-input>
+      </el-form-item>
+      <el-form-item label="Venue:">
+        <el-input type="text" v-model="class_info.venue" maxlength="20"></el-input>
+      </el-form-item>
+      <el-form-item label="Time:">
+        <el-input type="text" v-model="class_info.time" maxlength="20"></el-input>
+      </el-form-item>
+      <el-form-item label="Date:">
+        <el-input type="text" v-model="class_info.date" maxlength="20"></el-input>
+      </el-form-item>
+      <el-form-item>
+        <el-checkbox v-model="class_info.negotiable">Time is Negotiable</el-checkbox>
+      </el-form-item>
+      <el-form-item label="Class Content:">
+        <el-input type="textarea" v-model="class_info.class_content"></el-input>
+      </el-form-item>
+      <el-form-item label="Prerequisite:">
+        <el-input type="textarea" v-model="class_info.prerequisite"></el-input>
+      </el-form-item>
+      <el-form-item>
+        <el-button v-on:click="createClass">Create Class</el-button>
+      </el-form-item>
+    </el-form>
   </div>
 </template>
 
@@ -107,6 +123,12 @@
               this.temp.push(x.key);
             }).then(()=>{
               this.$firebase_basic.database().ref("users/" + this.uid + "/class_teach").set(this.temp);
+            });
+            this.$alert("You have created a class!", "Notification", {
+              confirmButtonText: 'OK',
+              callback: action => {
+
+              }
             });
           }
         }

@@ -1,30 +1,10 @@
 <template>
   <div id="custom-footer">
     <h1>Contact</h1>
-    <figure>
-      <img src="../assets/icon_04.png">
-      <figcaption>
-        <h2>chinxiongwei@hotmail.com</h2>
-      </figcaption>
-    </figure>
-    <figure>
-      <img src="../assets/icon_04.png">
-      <figcaption>
-        <h2>chinxiongwei@hotmail.com</h2>
-      </figcaption>
-    </figure>
-    <figure>
-      <img src="../assets/icon_04.png">
-      <figcaption>
-        <h2>chinxiongwei@hotmail.com</h2>
-      </figcaption>
-    </figure>
-    <figure>
-      <img src="../assets/icon_04.png">
-      <figcaption>
-        <h2>chinxiongwei@hotmail.com</h2>
-      </figcaption>
-    </figure>
+    <h2>chinxiongwei@hotmail.com</h2>
+    <h2>chinxiongwei@hotmail.com</h2>
+    <h2>chinxiongwei@hotmail.com</h2>
+    <h2>chinxiongwei@hotmail.com</h2>
   </div>
 </template>
 
@@ -35,5 +15,7 @@
 </script>
 
 <style scoped>
-
+  h1{
+    font-size: 2rem;
+  }
 </style>

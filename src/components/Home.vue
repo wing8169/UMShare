@@ -1,22 +1,50 @@
 <template>
-  <div>
-    <nav>
-      <ul>
-        <h1>UM SHARE</h1>
-        <p>To share, to learn, to earn</p>
-        <button v-on:click="facebookLogout">Log Out</button>
-        <li><a v-on:click="crt_component = 'my-profile'">My Profile</a></li>
-        <li><a v-on:click="crt_component = 'my-groups'">My Groups</a></li>
-        <li><a v-on:click="crt_component = 'join-a-group'">Join a Group</a></li>
-        <li><a v-on:click="crt_component = 'be-a-student'">Be a Student</a></li>
-        <li><a v-on:click="crt_component = 'be-a-teacher'">Be a Teacher</a></li>
-        <li><a v-on:click="crt_component = 'send-feedback'">Send Feedback</a></li>
-      </ul>
-    </nav>
-    <component v-bind:is="crt_component" v-bind:uid="uid"></component>
-    <h3>You only have to know one thing;</h3>
-    <h2>You can learn anything</h2>
-    <custom-footer></custom-footer>
+  <div id="content">
+    <el-container>
+      <el-aside width="20%" id="navBar">
+        <nav>
+          <el-row type="flex" justify="center">
+            <h1 id="title">UM SHARE</h1>
+          </el-row>
+          <el-row type="flex" justify="center">
+            <p id="subtitle">To share, to learn, to earn</p>
+          </el-row>
+          <el-row type="flex" justify="center">
+            <el-button v-on:click="facebookLogout" id="logOut">Log Out</el-button>
+          </el-row>
+          <el-menu default-active="2">
+            <el-menu-item index="1" v-on:click="crt_component = 'my-profile'">
+              <a>My Profile</a>
+            </el-menu-item>
+            <el-menu-item index="2" v-on:click="crt_component = 'my-groups'">
+              <a>My Groups</a>
+            </el-menu-item>
+            <el-menu-item index="3" v-on:click="crt_component = 'join-a-group'">
+              <a>Join a Group</a>
+            </el-menu-item>
+            <el-menu-item index="4" v-on:click="crt_component = 'be-a-student'">
+              <a>Be a Student</a>
+            </el-menu-item>
+            <el-menu-item index="5" v-on:click="crt_component = 'be-a-teacher'">
+              <a>Be a Teacher</a>
+            </el-menu-item>
+            <el-menu-item index="6" v-on:click="crt_component = 'send-feedback'">
+              <a>Send Feedback</a>
+            </el-menu-item>
+          </el-menu>
+        </nav>
+      </el-aside>
+      <el-container id="contents">
+        <el-main>
+          <component v-bind:is="crt_component" v-bind:uid="uid"></component>
+        </el-main>
+        <el-footer>
+          <h3>You only have to know one thing;</h3>
+          <h2>You can learn anything</h2>
+          <custom-footer></custom-footer>
+        </el-footer>
+      </el-container>
+    </el-container>
   </div>
 </template>
 
@@ -76,5 +104,30 @@
 </script>
 
 <style scoped>
-
+  /*#content{*/
+    /*background-image: url("../assets/homebg.jpg");*/
+    /*height: 100%;*/
+    /*background-position: center;*/
+    /*background-repeat: no-repeat;*/
+    /*background-size: cover;*/
+  /*}*/
+  #logOut{
+    margin-bottom: 30px;
+  }
+  #navBar{
+    min-width: 300px;
+  }
+  #title{
+    font-size: 2.5em;
+    margin-bottom: 0;
+  }
+  #subtitle{
+    font-size: 1.5em;
+  }
+  a{
+    font-size: 1.5em;
+  }
+  #contents{
+    min-width: 500px;
+  }
 </style>

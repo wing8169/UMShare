@@ -62,7 +62,7 @@
         sendRequest(){
           this.$firebase_basic.database().ref('classes/' + this.class_info.key + "/requests").once('value').then((data)=> {
             this.temp = data.val();
-            // if nothing then {}
+            // if nothing then []
             if(!this.temp) this.temp = [];
             if(this.temp.indexOf(this.uid) == -1) this.temp.push(this.uid);
             else alert("You have already sent a request to this class!");

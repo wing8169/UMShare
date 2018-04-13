@@ -18,7 +18,7 @@ export default[
   {path: "/beateacher/:uid", name: "beateacher", component: beATeacher, props: true},
   {path: "/sendfeedback/:uid", name: "sendfeedback", component: sendFeedBack, props: true},
   {path: "/home/:uid", name: "home", component: Home, props: true},
-  {path: "/groupchatroom/:gid", name: "groupChatroom", component: groupChatroom, props: true}
+  {path: "/groupchatroom/:group_info", name: "groupChatroom", component: groupChatroom, props: true}
 ]
 
 // group chat room no yet implemented

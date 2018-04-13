@@ -102,13 +102,14 @@
               // push the image to storage
               let ref = this.$firebase_basic.storage().ref().child("group_images/" + x.key + "." + this.file.name.substring(this.file.name.lastIndexOf(".")+1));
               ref.put(this.file);
-            });
-            // update user_info.group
-            this.$firebase_basic.database().ref("users/" + this.uid + "/group").once('value').then((data)=>{
-              this.temp = data.val();
-              this.temp.push(x.key);
             }).then(()=>{
-              this.$firebase_basic.database().ref("users/" + this.uid + "/group").set(this.temp);
+              // update user_info.group
+              this.$firebase_basic.database().ref("users/" + this.uid + "/group").once('value').then((data)=>{
+                this.temp = data.val();
+                this.temp.push(x.key);
+              }).then(()=>{
+                this.$firebase_basic.database().ref("users/" + this.uid + "/group").set(this.temp);
+              });
             });
           }
         },

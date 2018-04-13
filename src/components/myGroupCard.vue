@@ -11,7 +11,7 @@
       <p></p>
     </div>
     <form>
-      <button v-on:click="" type="button">Go Now</button>
+      <button v-on:click="goChatroom" type="button">Go Now</button>
       <button v-on:click="quitGroup" type="button">Quit</button>
     </form>
   </div>
@@ -59,6 +59,10 @@
         }).then(()=>{
           this.$firebase_basic.database().ref("groups/" + this.group_info.key + "/members").set(this.temp);
         });
+      },
+      goChatroom: function(){
+        // navigate to the group chatroom
+        this.$router.push({name: "groupChatroom", params: {group_info: this.group_info, uid: this.uid}});
       }
     }
   }

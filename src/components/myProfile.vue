@@ -1,22 +1,30 @@
 <template>
   <div id="myProfile">
     <h1>Profile</h1>
-    <img v-bind:src="user_info.profile_pic" alt="">
-    <form>
-      <label>Full Name:</label>
-      <input type="text" v-model="user_info.username" disabled>
-      <label>Birthday:</label>
-      <input type="date" v-model="user_info.birthday">
-      <label>Faculty:</label>
-      <input type="text" v-model="user_info.faculty" maxlength="50">
-      <label>Course:</label>
-      <input type="text" v-model="user_info.course" maxlength="50">
-      <label>Contact Number:</label>
-      <input type="text" v-model="user_info.contact" maxlength="15">
-      <label>Biography:</label>
-      <textarea cols="30" rows="10" v-model="user_info.biography" maxlength="50"></textarea>
-      <button v-on:click="updateInfo" type="button">Begin</button>
-    </form>
+    <el-form label-position="top">
+      <img v-bind:src="user_info.profile_pic" alt="">
+      <el-form-item label="Full Name:">
+        <el-input type="text" v-model="user_info.username" disabled></el-input>
+      </el-form-item>
+      <el-form-item label="Birthday:">
+        <el-input type="date" v-model="user_info.birthday"></el-input>
+      </el-form-item>
+      <el-form-item label="Faculty:">
+        <el-input type="text" v-model="user_info.faculty" maxlength="50"></el-input>
+      </el-form-item>
+      <el-form-item label="Course:">
+        <el-input type="text" v-model="user_info.course" maxlength="50"></el-input>
+      </el-form-item>
+      <el-form-item label="Contact Number:">
+        <el-input type="text" v-model="user_info.contact" maxlength="20"></el-input>
+      </el-form-item>
+      <el-form-item label="Biography:">
+        <el-input type="textarea" v-model="user_info.biography" maxlength="50"></el-input>
+      </el-form-item>
+      <el-form-item>
+        <el-button type="button" v-on:click="updateInfo" >Update Info</el-button>
+      </el-form-item>
+    </el-form>
   </div>
 </template>
 
@@ -59,12 +67,22 @@
           // map the path to the user_info
           this.$firebase_basic.database().ref().update(updates);
           // update the data and alert the user
-          alert("update complete!");
+          this.$alert("update complete!", "Notification", {
+            confirmButtonText: 'OK',
+            callback: action => {
+            }
+          });
         }
       }
     }
 </script>
 
 <style scoped>
-
+  img{
+    height: 150px;
+    width: 150px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+  }
 </style>

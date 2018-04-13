@@ -1,49 +1,61 @@
 <template>
-  <div id="mainPage">
-    <header id="first_page">
-      <h1>UM SHARE</h1>
-      <p>To share, to learn, to earn</p>
-      <el-button v-on:click="facebookLogin">Begin</el-button>
-    </header>
-    <nav>
-      <a href="#first_page">UM Share</a>
-      <a href="#second_page">About</a>
-      <a href="#third_page">Services</a>
-      <a href="#forth_page">Contact</a>
-    </nav>
-    <article id="second_page">
-      <header>
-        <h1>About us</h1>
-      </header>
-      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-    </article>
-    <section id="third_page">
-      <header>
-        <h1>Services</h1>
-      </header>
-      <figure>
-        <img src="../assets/icon_01.png">
-        <figcaption>
-          <h2>Peer-to-peer</h2>
-          <p>Students join a group which have  people with same interest to practice the skills.</p>
-        </figcaption>
-      </figure>
-      <figure>
-        <img src="../assets/icon_02.png">
-        <figcaption>
-          <h2>Students</h2>
-          <p>Students pay for a teacher who can professionally teach them at particular skills.</p>
-        </figcaption>
-      </figure>
-      <figure>
-        <img src="../assets/icon_03.png">
-        <figcaption>
-          <h2>Teachers</h2>
-          <p>Students who are professional at a particular skill can teach other students with charges.</p>
-        </figcaption>
-      </figure>
-    </section>
-    <custom-footer></custom-footer>
+  <div>
+    <el-container id="mainPage" style="min-width: 400px;">
+      <nav id="navBar">
+        <el-menu mode="horizontal" background-color="#000"
+                 text-color="#fff"
+                 active-text-color="#ffd04b">
+          <el-menu-item index="1"><a href="#first_page">UM Share</a></el-menu-item>
+          <el-menu-item index="2"><a href="#second_page">About</a></el-menu-item>
+          <el-menu-item index="3"><a href="#third_page">Services</a></el-menu-item>
+          <el-menu-item index="4"><a href="#forth_page">Contact</a></el-menu-item>
+        </el-menu>
+      </nav>
+      <div id="first_page">
+        <el-header>
+          <h1 align="center">UM SHARE</h1>
+        </el-header>
+        <p align="center">To share, to learn, to earn</p>
+        <el-button type="primary" v-on:click="facebookLogin" style="margin: auto; display: block;">Begin</el-button>
+      </div>
+      <el-main>
+        <article id="second_page">
+          <header>
+            <h1>About us</h1>
+          </header>
+          <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+        </article>
+        <section id="third_page">
+          <header>
+            <h1>Services</h1>
+          </header>
+          <figure>
+            <img src="../assets/icon_01.png">
+            <figcaption>
+              <h2>Peer-to-peer</h2>
+              <p>Students join a group which have  people with same interest to practice the skills.</p>
+            </figcaption>
+          </figure>
+          <figure>
+            <img src="../assets/icon_02.png">
+            <figcaption>
+              <h2>Students</h2>
+              <p>Students pay for a teacher who can professionally teach them at particular skills.</p>
+            </figcaption>
+          </figure>
+          <figure>
+            <img src="../assets/icon_03.png">
+            <figcaption>
+              <h2>Teachers</h2>
+              <p>Students who are professional at a particular skill can teach other students with charges.</p>
+            </figcaption>
+          </figure>
+        </section>
+      </el-main>
+      <el-footer id="forth_page">
+        <custom-footer></custom-footer>
+      </el-footer>
+    </el-container>
   </div>
 </template>
 
@@ -108,7 +120,9 @@
               this.$firebase_basic.database().ref("activeUsers").once('value').then((data)=>{
                 this.temp = data.val();
                 if(!this.temp) this.temp = [];
-                this.temp.push(this.user.uid);
+                let index = this.temp.indexOf(this.user.id);
+                if(index == -1)
+                  this.temp.push(this.user.uid);
               }).then(()=>{
                 this.$firebase_basic.database().ref("activeUsers").set(this.temp);
               })
@@ -126,5 +140,20 @@
 </script>
 
 <style scoped>
+  #first_page, #second_page, #third_page, #forth_page{
+    height: 100vh;
+  }
+  #first_page{
+    background-image: url("../assets/bg02.jpg");
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
 
+  }
+  #navBar{
+    overflow: hidden;
+    position: sticky;
+    top: 0;
+    width: 100%;
+  }
 </style>
