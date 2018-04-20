@@ -70,20 +70,22 @@
         return{
           token: "",
           user: null,
-          user_info:{
+          user_details:{
             username: "",
             profile_pic: "",
-            email: "",
-            verified: "",
+            group: [],
             class_learn: [],
             class_teach: [],
+            quited_group: [],
+            deleted_class_learn: [],
+            deleted_class_teach: [],
+            chat_history: [],
             biography: "",
             contact: "",
             birthday: "",
             faculty: "",
             course: "",
-            rating: {num: 0, star: 0},
-            review: []
+            rating: {num: 0, star: 0}
           }
         }
       },
@@ -109,9 +111,9 @@
               this.$firebase_basic.database().ref('users/' + this.user.uid).once('value').then((data)=>{
                 // if data is null, create new user account for user
                 if(!data.val()){
-                  this.user_info.username = this.user.displayName;
-                  this.user_info.profile_pic = this.user.photoURL;
-                  this.$firebase_basic.database().ref("users/" + this.user.uid).set(this.user_info);
+                  this.user_details.username = this.user.displayName;
+                  this.user_details.profile_pic = this.user.photoURL;
+                  this.$firebase_basic.database().ref("users/" + this.user.uid).set(this.user_details);
                 }
               })
             }).then(()=>{

@@ -12,21 +12,24 @@
           <el-row type="flex" justify="center">
             <el-button v-on:click="facebookLogout" id="logOut">Log Out</el-button>
           </el-row>
-          <el-menu default-active="1">
+          <el-menu default-active="2">
             <el-menu-item index="1" v-on:click="crt_component = 'my-profile'">
               <a>My Profile</a>
             </el-menu-item>
-            <el-menu-item index="2" v-on:click="crt_component = 'my-classes'">
-              <a>My Classes</a>
+            <el-menu-item index="2" v-on:click="crt_component = 'my-groups'">
+              <a>My Groups</a>
             </el-menu-item>
-            <el-menu-item index="3" v-on:click="crt_component = 'be-a-student'">
+            <el-menu-item index="3" v-on:click="crt_component = 'join-a-group'">
+              <a>Join a Group</a>
+            </el-menu-item>
+            <el-menu-item index="4" v-on:click="crt_component = 'be-a-student'">
               <a>Be a Student</a>
             </el-menu-item>
-            <el-menu-item index="4" v-on:click="crt_component = 'be-a-teacher'">
+            <el-menu-item index="5" v-on:click="crt_component = 'be-a-teacher'">
               <a>Be a Teacher</a>
             </el-menu-item>
-            <el-menu-item index="5" v-on:click="crt_component = 'send-feedback'">
-              <a>Send Feedback To Us</a>
+            <el-menu-item index="6" v-on:click="crt_component = 'send-feedback'">
+              <a>Send Feedback</a>
             </el-menu-item>
           </el-menu>
         </nav>
@@ -47,7 +50,8 @@
 
 <script>
   import myProfile from "./myProfile.vue";
-  import myClasses from "./myClasses.vue";
+  import myGroups from "./myGroups.vue";
+  import joinAGroup from "./joinAGroup.vue";
   import beAStudent from "./beAStudent.vue";
   import beATeacher from "./beATeacher.vue";
   import sendFeedBack from "./sendFeedBack.vue";
@@ -56,7 +60,8 @@
     name: "home",
     components:{
       'my-profile': myProfile,
-      'my-classes': myClasses,
+      'my-groups': myGroups,
+      'join-a-group': joinAGroup,
       'be-a-student': beAStudent,
       'be-a-teacher': beATeacher,
       'send-feedback': sendFeedBack,
@@ -65,7 +70,7 @@
     props: ["uid"],
     data(){
       return{
-        crt_component: "my-profile",
+        crt_component: "my-groups",
         temp: []
       }
     },

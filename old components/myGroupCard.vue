@@ -60,6 +60,10 @@
         }).then(()=>{
           this.$firebase_basic.database().ref("groups/" + this.group_info.key + "/members").set(this.temp);
         });
+      },
+      goChatroom: function(){
+        // navigate to the group chatroom
+        this.$router.push({name: "groupChatroom", params: {group_info: this.group_info, uid: this.uid}});
       }
     }
   }

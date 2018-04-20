@@ -2,21 +2,14 @@
   <div id="be-a-teacher">
     <h1>Create Class</h1>
     <el-form label-position="top">
-      <el-form-item label="Class image:">
-        <input type="file" v-on:change="onFileChange"></input>
-      </el-form-item>
-      <img v-bind:src="image" alt="">
       <el-form-item label="Class Name:">
         <el-input type="text" v-model="class_info.name" maxlength="20"></el-input>
       </el-form-item>
-      <el-form-item label="Category:">
-        <el-input type="text" v-model="class_info.category" maxlength="20"></el-input>
-      </el-form-item>
       <el-form-item label="Description:">
-        <el-input type="text" v-model="class_info.desc" maxlength="50"></el-input>
+        <el-input type="textarea" v-model="class_info.desc"></el-input>
       </el-form-item>
       <el-form-item label="Pricing per Class: RM">
-        <el-input type="number" v-model="class_info.pricing" maxlength="5"></el-input>
+        <el-input type="number" v-model="class_info.pricing" min="10"></el-input>
       </el-form-item>
       <el-form-item label="Available Slots:">
         <el-input type="number" v-model="class_info.slots" maxlength="5"></el-input>
@@ -24,20 +17,36 @@
       <el-form-item label="Venue:">
         <el-input type="text" v-model="class_info.venue" maxlength="20"></el-input>
       </el-form-item>
-      <el-form-item label="Time:">
-        <el-input type="text" v-model="class_info.time" maxlength="20"></el-input>
-      </el-form-item>
-      <el-form-item label="Date:">
-        <el-input type="text" v-model="class_info.date" maxlength="20"></el-input>
-      </el-form-item>
-      <el-form-item>
-        <el-checkbox v-model="class_info.negotiable">Time is Negotiable</el-checkbox>
-      </el-form-item>
-      <el-form-item label="Class Content:">
-        <el-input type="textarea" v-model="class_info.class_content"></el-input>
-      </el-form-item>
       <el-form-item label="Prerequisite:">
         <el-input type="textarea" v-model="class_info.prerequisite"></el-input>
+      </el-form-item>
+      <el-form-item label="WhatsApp Group Share Link:">
+        <el-input type="text" v-model="class_info.whatsapp_link"></el-input>
+      </el-form-item>
+      <el-form-item label="Available Tags:">
+        <el-button v-for="item in tags_display" v-on:click="addTags(item)">{{ item }}</el-button>
+      </el-form-item>
+      <el-form-item label="Chosen Tags:">
+        <el-button v-for="item in class_info.tags" v-on:click="removeTags(item)">{{ item }}</el-button>
+      </el-form-item>
+      <el-form-item label="Class details:">
+        <div v-for="class_detail in class_details" id="block">
+          <el-form-item label="Content:">
+            <el-input type="textarea" v-model="class_detail.content" aria-required="true"></el-input>
+          </el-form-item>
+          <el-form-item label="Date:">
+            <el-input type="date" v-model="class_detail.date" aria-required="true"></el-input>
+          </el-form-item>
+          <el-form-item label="Time:">
+            <el-input type="time" v-model="class_detail.time"></el-input>
+          </el-form-item>
+        </div>
+      </el-form-item>
+      <el-form-item>
+        <el-button v-on:click="addClasses">Add class</el-button>
+      </el-form-item>
+      <el-form-item>
+        <el-button v-on:click="removeClasses">Remove class</el-button>
       </el-form-item>
       <el-form-item>
         <el-button v-on:click="createClass">Create Class</el-button>
@@ -52,75 +61,104 @@
       props: ["uid"],
       data(){
         return{
-          image: "",
+          x: "",
+          tags: [],
           temp: [],
-          file: "",
           class_info:{
             name: "",
-            image: "",
             desc: "",
-            category: "",
+            whatsapp_link: "",
+            tags: [],
             pricing: "",
             slots: 0,
             venue: "",
-            time: "",
-            date: "",
-            negotiable: false,
-            requests: [0],
-            class_content: "",
             prerequisite: "",
-            chat: [{time: 0, id: "default", msg: "Hi there"}],
-            pinned_msg: {time: 0, id: "default", msg: "default"},
+            class_info: [],
             conductor: this.uid,
             members: [this.uid],
-            open_register: true,
-            deleted: false
-          }
+            open_register: true
+          },
+          class_details: [{
+            key: "",
+            parent_class: "",
+            content: "",
+            data: "",
+            time: "",
+            attended_members: [],
+            members: []
+          }]
         }
       },
+      computed:{
+        tags_display: function(){
+          let tmp = [];
+          for(let item in this.tags){
+            if(this.class_info.tags.indexOf(this.tags[item]) === -1){
+              tmp.push(this.tags[item]);
+            }
+          }
+          return tmp;
+        }
+      },
+      mounted(){
+        this.$firebase_basic.database().ref("tags").once('value').then((data)=>{
+          this.tags = data.val();
+          if(!this.tags) this.tags = [];
+        })
+      },
       methods:{
-        // when a file is selected
-        onFileChange(e) {
-          let files = e.target.files || e.dataTransfer.files;
-          if (!files.length)
-            return;
-          // if the file is not empty, set this.file to the first file.
-          this.file = files[0];
-          // create an image to that file.
-          this.createImage(files[0]);
+        addTags(item){
+          if(this.class_info.tags.length < 5){
+            this.class_info.tags.push(item);
+          }
         },
-        createImage(file) {
-          // create the image based on file
-          let reader = new FileReader();
-          let vm = this;
-          reader.onload = (e) => {
-            vm.image = e.target.result;
-          };
-          reader.readAsDataURL(file);
+        addClasses(){
+          this.class_details.push({
+            parent_class: "",
+            content: "",
+            date: "",
+            time: "",
+            attended_members: [],
+            members: []
+          });
+        },
+        removeClasses(){
+          if(this.class_details.length > 0) this.class_details.splice(0, 1);
+        },
+        removeTags(item){
+          this.class_info.tags.splice(this.class_info.tags.indexOf(item), 1);
         },
         createClass(){
           let verified = true;
-          // verify the file first
-          if(!this.file.name){
-            alert("upload image first");
+          if(this.class_info.tags.length === 0){
             verified = false;
+            this.$alert('You need to add at least one tag for your class!', 'Warning', {
+              confirmButtonText: 'OK',
+              callback: action => {
+
+              }
+            });
           }
           if(verified){
             // push the class_info to the database and store key at x
-            let x = this.$firebase_basic.database().ref("classes").push(this.class_info);
-            // update this.class_info.image
-            this.class_info.image = "class_images/" + x.key + "." + this.file.name.substring(this.file.name.lastIndexOf(".")+1);
-            // update database with image
-            this.$firebase_basic.database().ref("classes/" + x.key + "/image").set(this.class_info.image);
+            this.x = this.$firebase_basic.database().ref("classes").push(this.class_info);
             // update database with key
-            this.$firebase_basic.database().ref("classes/" + x.key + "/key").set(x.key);
-            // refer to the location in storage
-            let ref = this.$firebase_basic.storage().ref().child("class_images/" + x.key + "." + this.file.name.substring(this.file.name.lastIndexOf(".")+1));
-            // push the image to the storage, and update class_teach
-            ref.put(this.file);
+            this.$firebase_basic.database().ref("classes/" + this.x.key + "/key").set(this.x.key);
+            // push class_info data
+            for(let i=0; i<this.class_details.length; i++){
+              this.class_details[i].parent_class = this.x.key;
+              // push the class_info to the database and store key at x
+              let y = this.$firebase_basic.database().ref("class_info").push(this.class_details[i]);
+              // push class
+              this.class_info.class_info.push(y.key);
+            }
+            // update classes.class_info
+            this.$firebase_basic.database().ref("classes/" + this.x.key + "/class_info").set(this.class_info.class_info);
+            // update user class_teach
             this.$firebase_basic.database().ref("users/" + this.uid + "/class_teach").once('value').then((data)=>{
               this.temp = data.val();
-              this.temp.push(x.key);
+              if(!this.temp) this.temp = [];
+              this.temp.push(this.x.key);
             }).then(()=>{
               this.$firebase_basic.database().ref("users/" + this.uid + "/class_teach").set(this.temp);
             });
@@ -137,5 +175,7 @@
 </script>
 
 <style scoped>
-
+  #block{
+    border: 2px solid black;
+  }
 </style>

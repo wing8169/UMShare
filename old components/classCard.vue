@@ -1,5 +1,5 @@
 <template>
-  <div id="class-card">
+  <div id="group-card">
     <div id="front" v-on:mouseenter="showFront = false" v-show="showFront">
       <h3>{{ class_info.name }}</h3>
       <h3>{{ class_info.key }}</h3>
